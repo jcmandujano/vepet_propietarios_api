@@ -1,5 +1,7 @@
-const express = require('express')
-const cors = require('cors')
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { dbConnection } = require('../database/config')
 
 class Server {
 
@@ -7,10 +9,16 @@ class Server {
         this.app = express()
         this.port =  process.env.PORT
         this.usersRoute = '/api/users'
-        //Middleware
+        //db connetion
+        this.connectDb();
+        //Middlewares section
         this.middlewares()
         //Rutas de mi aplicacion
         this.routes()
+    }
+
+    async connectDb(){
+        await dbConnection()
     }
 
     middlewares(){
@@ -18,6 +26,9 @@ class Server {
         this.app.use(express.static('public'))
         //CORS
         this.app.use(cors())
+        //Parsear el body usando body parser
+        this.app.use(bodyParser.json()); // body en formato json
+        this.app.use(bodyParser.urlencoded({ extended: false })); //body formulario
     }
 
     //creamos via express las rutas al endpoint y asignamos las operaciones deseadas
