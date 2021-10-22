@@ -9,6 +9,7 @@ class Server {
         this.app = express()
         this.port =  process.env.PORT
         this.usersRoute = '/api/users'
+        this.petsRoute = '/api/pets'
         //db connetion
         this.connectDb();
         //Middlewares section
@@ -34,6 +35,7 @@ class Server {
     //creamos via express las rutas al endpoint y asignamos las operaciones deseadas
     routes(){
        this.app.use(this.usersRoute,require('../routes/user.routes'))
+       this.app.use(this.petsRoute,require('../routes/pets.routes'))
     }
 
     //iniciamos el rest server por el puerto configurado en environment
