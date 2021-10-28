@@ -3,17 +3,23 @@ const { check } = require('express-validator')
 const {createPets, findPet, updatePet, deletePet, readPets} = require('../controllers/pets.controller')
 const { existeIdMascota} = require('../helpers/db-validators')
 const { validarCampos } = require('../middlewares/validar-campos')
+const { validateJWT } = require('../middlewares/jwt-validator')
 
 const router = Router()
 
-router.get('/', readPets)
+router.get('/',[
+    validateJWT
+], readPets)
 
-router.get('/:id', findPet)
+router.get('/:id',[
+    validateJWT
+], findPet)
 
 router.put('/:id',[
     check('id','No es un id valido').isMongoId(),
     check('id').custom(existeIdMascota),
-    validarCampos
+    validateJWT,
+    validarCampos,
 ], updatePet)
 
 router.post('/',[
@@ -25,9 +31,12 @@ router.post('/',[
     check('castrado','La información de esterilización es obligatoria').not().isEmpty(),
     check('personalidad','La personalidad es obligatoria').not().isEmpty(),
     check('sexo','El sexo ingresado no es valido').isIn(['MACHO','HEMBRA', 'INDEFINIDO']),
+    validateJWT,
     validarCampos
 ], createPets)
 
-router.delete('/:id',deletePet)
+router.delete('/:id',[
+    validateJWT
+],deletePet)
 
 module.exports = router
