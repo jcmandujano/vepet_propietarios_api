@@ -2,6 +2,7 @@ const Role = require('../models/role')
 const Usuario = require('../models/user.model');
 const Mascota = require('../models/pets.model');
 const Especie = require('../models/species.model');
+const Raza = require('../models/races.model');
 
 const esRolValido = async(rol = '') => {
     const existeRol = await Role.findOne({ rol });
@@ -39,7 +40,6 @@ const existeIdMascota = async(id) => {
 }
 
 const existeIdEspecie = async(id) => {
-    //verificar si existe la mascota y que no este eliminada
     const query = {
         estado: true
     }
@@ -50,10 +50,22 @@ const existeIdEspecie = async(id) => {
     }
 }
 
+const existeIdRaza = async(id) => {
+    const query = {
+        estado: true
+    }
+
+    const existeRaza = await Raza.findById(id).where(query)
+    if (!existeRaza) {
+        throw new Error(`El id de esta raza no existe`)
+    }
+}
+
 module.exports = {
     esRolValido,
     emailDisponible,
     existeIdUsuario,
     existeIdMascota,
-    existeIdEspecie
+    existeIdEspecie,
+    existeIdRaza
 }

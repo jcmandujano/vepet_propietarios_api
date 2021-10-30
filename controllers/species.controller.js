@@ -44,7 +44,7 @@ const createSpecies = async(req, res = response) => {
 const deleteSpecie = async(req, res = response) => {
     const { id } = req.params;
 
-    const especie = await Especie.findByIdAndUpdate(id, { estado: false })
+    await Especie.findByIdAndUpdate(id, { estado: false })
     res.json({
         respuesta: 'El registro se borro correctamente'
     })
