@@ -12,6 +12,7 @@ class Server {
         this.usersRoute = '/api/users'
         this.petsRoute = '/api/pets'
         this.speciesRoute = '/api/species'
+        this.racesRoute = '/api/races'
             //db connetion
         this.connectDb();
         //Middlewares section
@@ -40,7 +41,7 @@ class Server {
         this.app.use(this.usersRoute,require('../routes/user.routes'))
         this.app.use(this.petsRoute,require('../routes/pets.routes'))
         this.app.use(this.speciesRoute, require('../routes/species.routes'))
-
+        this.app.use(this.racesRoute, require('../routes/races.routes'))
     }
 
     //iniciamos el rest server por el puerto configurado en environment
