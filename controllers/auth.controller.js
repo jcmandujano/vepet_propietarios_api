@@ -2,6 +2,7 @@ const { response } = require("express");
 const bcrypt = require('bcryptjs');
 const Usuario = require('../models/user.model');
 const { generateJWT } = require("../helpers/jwt-generator");
+const { transporter } = require("../helpers/mailer");
 
 const login = async (req, res= response) =>{ 
     const { correo, password } = req.body;
@@ -33,7 +34,16 @@ const login = async (req, res= response) =>{
         res.json({
            user,
            token
-        })
+        });
+
+        //Manda correo electronico
+        await transporter.sendMail({
+            from: '"Ingreso con exito" <info@vepet.com>', // sender address
+            to: correo, // list of receivers
+            subject: "Inicio de sesión exitoso", // Subject line
+            html: "<h1>Bienvenido</h1><hr><p>Acabas de iniciar sesión exitosamente</p>", // html body
+        });
+
     } catch (error) {
         console.log('ERROR',error)
         return res.status(500).json({
