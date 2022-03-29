@@ -28,7 +28,7 @@ router.post('/', [
     check('correo','El correo no es valido').isEmail(),
     check('correo').custom(emailDisponible),
     check('rol').custom(esRolValido),
-    validateJWT,
+    // validateJWT,
     //check('rol','El rol ingresado no es valido').isIn(['ADMIN_ROL','PROPIETARIO_ROL', 'MEDICO_ROL']),
     validarCampos // custom middleware
 ] ,postUsers) 
